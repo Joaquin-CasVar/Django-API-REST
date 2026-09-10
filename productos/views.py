@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
+
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from rest_framework import generics, mixins
 
@@ -17,6 +17,7 @@ from .serializers import ArticuloSerializer, ProveedorSerializer, ArticuloPublic
 
 class ArticuloListCreateAPIView(generics.ListCreateAPIView):
     queryset = Articulo.objects.all().select_related('proveedor')
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -63,6 +64,7 @@ class ArticuloListCreateAPIView(generics.ListCreateAPIView):
 
 class ArticulosDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Articulo.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = ArticuloSerializer
 
 
