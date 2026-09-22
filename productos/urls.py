@@ -1,9 +1,14 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-from .views import ArticuloListCreateAPIView, ArticulosDetailAPIView, proveedores
+from .views import ArticuloViewSet, ProveedorViewSet
+
+router = DefaultRouter()
+
+router.register('articulos', ArticuloViewSet, basename='articulos-api')
+router.register('proveedores', ProveedorViewSet, basename='proveedores-api')
+
 
 urlpatterns = [
-    path('articulos/', ArticuloListCreateAPIView.as_view(), name='articulos_api'),
-    path('articulos/<int:pk>/', ArticulosDetailAPIView.as_view(), name='articulo_detail_api'),
-    path('proveedores/', proveedores, name='proveedores_api'),
+    path('', include(router.urls)),
 ]
