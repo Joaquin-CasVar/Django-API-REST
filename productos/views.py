@@ -4,14 +4,19 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
+from drf_spectacular.utils import extend_schema, OpenApiResponse
+
 
 from .models import Articulo, Proveedor
 from .serializers import ArticuloSerializer, ArticuloPublicSerializer, ProveedorSerializer
 
 class ArticuloViewSet(viewsets.ModelViewSet):
+    '''
+    Descripcion general a todos los endpoints que sirva este viewset
+    '''
     queryset = Articulo.objects.all().select_related('proveedor')
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
     filterset_fields = {
         'proveedor': ['exact'], 
@@ -26,6 +31,15 @@ class ArticuloViewSet(viewsets.ModelViewSet):
             return ArticuloPublicSerializer
         else:
             return ArticuloSerializer
+
+    # @extend_schema(
+    #     summary='Creacion custom de articulo',
+    #     description='Si stock < 0 se asume otra sucursal',
+    #     responses={
+    #         201: ArticuloSerializer, #created
+    #         400: OpenApiResponse(description='Error de validacion')
+    #     }
+    # )
 
 #   Ejemplo de borrado logico (para implementar en consesionaria)
 
