@@ -32,14 +32,16 @@ class ArticuloViewSet(viewsets.ModelViewSet):
         else:
             return ArticuloSerializer
 
-    # @extend_schema(
-    #     summary='Creacion custom de articulo',
-    #     description='Si stock < 0 se asume otra sucursal',
-    #     responses={
-    #         201: ArticuloSerializer, #created
-    #         400: OpenApiResponse(description='Error de validacion')
-    #     }
-    # )
+    @extend_schema(
+        summary='Creacion custom de articulo',
+        description='Si stock < 0 se asume otra sucursal',
+        responses={
+            201: ArticuloSerializer, #created
+            400: OpenApiResponse(description='Error de validacion')
+        }
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs) # No cambiamos la funcion interna de create
 
 #   Ejemplo de borrado logico (para implementar en consesionaria)
 
