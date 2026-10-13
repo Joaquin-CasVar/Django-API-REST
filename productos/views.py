@@ -16,7 +16,7 @@ class ArticuloViewSet(viewsets.ModelViewSet):
     '''
     queryset = Articulo.objects.all().select_related('proveedor')
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filterset_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
     filterset_fields = {
         'proveedor': ['exact'], 
