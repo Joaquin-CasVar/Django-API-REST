@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free
     buildCommand: bash build.sh
-    startCommand: cd src && gunicorn settings.wsgi:application
+    startCommand: gunicorn settings.wsgi:application
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.3
